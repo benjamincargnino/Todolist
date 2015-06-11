@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1> Ma super To do List </h1>
+	
+	<form method = "POST" action ="ajout.php">
+		<input type="text" name="title" placeholder="Titre">
+		<br></br>
+		<textarea rows="6" name="description" placeholder = "Description"></textarea>
+		<br></br>
+		<label> Date de réalisation : </label>
+
+		<select name="day">
+			<?php
+			for ($i=1; $i <= 31; $i++) {
+				echo "<option value='". $i ."'> ".$i."</option>";
+			}
+
+			?>
+		</select>
+
+		<select name="month">
+			<option value="01"> janvier </option>
+			<option value="02"> février </option>
+			<option value="03"> mars </option>
+			<option value="04"> avril </option>
+			<option value="05"> mai </option>
+			<option value="06"> juin </option>
+			<option value="07"> juillet </option>
+			<option value="08"> août </option>
+			<option value="09"> septembre </option>
+			<option value="10"> octobre </option>
+			<option value="11"> novembre </option>
+			<option value="12"> décembre </option>
+		</select>
+
+		<select name="year">
+			<?php
+			for ($i=2015; $i <= 2035; $i++) {
+				echo "<option value='". $i ."'> ".$i."</option>";
+			}
+
+			?>
+		</select>	
+
+
+		<br></br>
+		<label> priorité : </label>
+		<select name="priority">
+			<option value="faible"> faible </option>
+			<option value="moyen"> moyen </option>
+			<option value="urgent"> urgent </option>
+		</select>
+		<br></br>
+		<button> Submit </button>
+	</form>
+	<h2>Liste de toutes mes taches</h2>
+
+	<form method="POST" action="remove-checked.php">
+
+		<?php
+
+		for ($i = 0 ; $i < count($toutesLesTaches) ; $i++)
+		{
+			// $now = date(’Y-m-d’); $expire = ‘2012-01-01′;
+
+			// $now = date(’Y-m-d’);
+			// $expire = ‘2012-01-01′;
+
+
+			// $now = new DateTime( $now );
+			// $now = $now->format(’Ymd’);
+			// $expire = new DateTime( $expire );
+			// $expire = $expire->format(’Ymd’);
+			$uneTache = $toutesLesTaches[$i];
+			$timestamp = strtotime($uneTache[2]);   //////////////////////////////////////// AFFICHER EN RETARD
+			$time = time();
+
+	echo "<input type ='checkbox' name='delete[]' value='$i'>" . $uneTache[0] . " - "; // titre
+	echo $uneTache[1] . " - "; // description
+	echo $uneTache[2] . " "; // date
+
+	if($uneTache[3] == "faible") 
+	{
+		echo "<font color = 'green'>  ($uneTache[3]) </font>";  ////////////////////////////////////////// CODE COULEUR
+	} elseif($uneTache[3] == "moyen") 
+	{
+		echo "<font color = 'orange'>  ($uneTache[3]) </font>"; // priority
+	} elseif ($uneTache[3] == "urgent")
+	{
+		echo "<font color = 'red'> ($uneTache[3]) </font>"; 
+	}
+	if($timestamp < $time) {
+		echo "<font color = 'red'>  en retard </font>";
+	}
+
+	// echo $timestamp;
+	// echo $time; 
+	echo "<br>";
+}
+
+
+?>
+<p> Nombre de taches à exécuter : 
+	<?php
+	echo count($toutesLesTaches);	   // Nombre de taches total 
+	?>
+</p>
+<button> Supprimer la(les) tache(s) sélectionnée(s) </button>
+
+</form>
+
+<br></br>
+<a href="remove-all.php"> Supprimer toutes les taches </a>
+
+
+
+</body>
+</html>
